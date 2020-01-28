@@ -5,6 +5,8 @@ from tello import Tello
 import tellopy
 #help(tellopy)
 
+turn = 0
+
 tello = Tello()
 
 #tello.send_command("takeoff")
@@ -18,6 +20,8 @@ drone = tellopy.Tello()
 import tellopy
 from time import sleep
 
+drone.connect()
+drone.wait_for_connection(60.0)
 
 
 while True:
@@ -38,38 +42,49 @@ while True:
 
 
 
+
     if y2 > 600:
-        print("com")
-        drone.connect()
-        drone.wait_for_connection(60.0)
+        print("up")
+        drone.up(60)
     elif y2 < 400:
-        print("LAND")
-        drone.land()
-    elif x2 > 600:
+        print("down")
+        drone.down(60)
+    else:
+        drone.up(0)
+        drone.down(0)
+
+    if x2 > 600:
         print("TAKEOFF")
-        drone.takeoff()
-    elif x2 < 500:
+    elif (x2 < 500) and (x2 > 1000):
         print("left")
 
-    if y1 == 511 or y1 == 512:
+
+    if (y1 == 511) or (y1 == 512):
         drone.set_pitch(0)
 
 
 
-    if y1 > 514:
+    if y1 > 550:
         print("forward")
         drone.set_pitch(1)
 
-    elif y1 < 509:
+    elif y1 < 500:
         print("backward")
         drone.set_pitch(-1)
-    elif x1 > 513:
-        print("hell")
-        drone.right(x1/5)
-    elif x1 < 507:
-        print("ii")
-        drone.left(x1/5)
-
-    if x1 == 510 or x1 == 512:
+    elif x1 > 550:
+        print("right")
+        drone.right(60)
+    elif x1 < 500:
+        print("left")
+        drone.left(60)
+    else:
         drone.right(0)
         drone.left(0)
+
+    if x1 > 1000:
+        if turn == 0:
+            drone.takeoff()
+            turn = 1
+        elif turn == 1:
+            drone.land()
+            turn = 0
