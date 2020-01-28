@@ -54,9 +54,16 @@ while True:
         drone.down(0)
 
     if x2 > 600:
-        print("TAKEOFF")
-    elif (x2 < 500) and (x2 > 1000):
-        print("left")
+        print("clock")
+        drone.clockwise(70)
+    elif x2 < 400:
+        print("CC")
+        drone.counter_clockwise(70)
+    else:
+        drone.clockwise(0)
+        drone.counter_clockwise(0)
+
+
 
 
     if (y1 == 511) or (y1 == 512):
@@ -84,7 +91,9 @@ while True:
     if x1 > 1000:
         if turn == 0:
             drone.takeoff()
+            print("takeoff")
             turn = 1
         elif turn == 1:
             drone.land()
+            print("land")
             turn = 0
